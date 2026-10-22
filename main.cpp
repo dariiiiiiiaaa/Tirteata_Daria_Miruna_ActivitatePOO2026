@@ -1,61 +1,124 @@
-#include <iostream>
-#include<cstring>
+#include<iostream>
 using namespace std;
-struct Telefon {
-    float diagonala;
-    int memorieGB;
-    bool dualSim;
-    char* model;
+
+class Prajitura {
+private:
+    char* denumire;
+    float pret;
+    int cantitate;
+    bool dePost;
+    int nrIngrediente;
+    string* ingrediente;
+    const int id;
+    static int cnt;
+public:
+    Prajitura(const Prajitura& p):id(cnt++) {
+        //implementare inline
+        this->denumire = new char[strlen("Tiramisu") + 1];
+        strcpy(denumire, "Tiramisu");
+        this->pret = 15;
+        this->cantitate = 250;
+        this->dePost = true;
+        this->nrIngrediente = 3;
+        this->ingrediente = new string[this->nrIngrediente];
+        this->ingrediente[0] = "Piscoturi";
+        this->ingrediente[1] = "Vanilie";
+        this->ingrediente[2] = "Cafea";
+
+    }
+
+
+    Prajitura(const char* denumire, float pret) {
+        //implementare inline
+        this->denumire = new char[strlen("Tiramisu") + 1];
+        strcpy(this->denumire, denumire);
+        this->pret = 15;
+        this->cantitate = 250;
+        this->dePost = true;
+        this->nrIngrediente = 3;
+        this->ingrediente = new string[this->nrIngrediente];
+        this->ingrediente[0] = "Piscoturi";
+        this->ingrediente[1] = "Vanilie";
+        this->ingrediente[2] = "Cafea";
+    }
+    //seminar4
+    Prajitura(const Prajitura& p) {
+        this->denumire = new char[strlen(p.denumire) + 1];
+        strcpy(this->denumire, p.denumire);
+
+        this->pret = p.pret;
+        this->cantitate = p.cantitate;
+        this->dePost = p.dePost;
+        this->nrIngrediente = p.nrIngrediente;
+
+        this->ingrediente = new string[this->nrIngrediente];
+        for (int i = 0; i < this->nrIngrediente; i++) {
+            this->ingrediente[i] = p.ingrediente[i];
+        }
+    }
+
+
+    ~Prajitura();//declarare constructor
+    int getCantitate() {
+        return this->cantitate;
+    }
+
+    int getnrIngrediente() {
+        return this->ingrediente;
+    }
+
+    float getPret() {
+        return this->pret;
+    }
+    static int getCnt() {
+        return this->cnt;
+    }
+
+    void afisare() {
+        cout << "Denumire: " << this->denumire << endl;
+        cout << "Pret: " << this->pret << endl;
+        cout << "Cantitate: " << this->cantitate << endl;
+        cout << "De post? (0/1): " << (this->dePost ? "Da" : "Nu") << endl;
+        cout << "Numar ingrediente: " << this->nrIngrediente << endl;
+        cout << "Ingredientele sunt: ";
+        for (int i = 0; i < this->nrIngrediente; i++) {
+            cout << this->ingrediente[i] << "; ";
+        }
+        cout << endl;
+    }
+    float costMediuGram() {
+        if (cantitate == 0) {
+            return 0;
+        }
+        else {
+            return this->pret / this->cantitate;
+        }
+    }
+
+    void modificaDenumire(const char* denumire) {
+        delete this->denumire;
+
+        this->denumire = new char[strlen(denumire) + 1];
+        strcpy(this->denumire, denumire);
+    }
 };
-Telefon citireTelefon() { // citirea caracteristicilor unui telefon
-    char numeModel[50];
-    Telefon t;
-    cout << "diagonala (inch): "; cin >> t.diagonala;
-    cout << "memorie (GB): "; cin >> t.memorieGB;
-    cout << "Dual SIM?: (0/1) "; cin >> t.dualSim;
-    cout << "model: "; cin >> numeModel;
-    t.model = new char[strlen(numeModel) + 1];
-    strcpy(t.model, numeModel);
-    return t;
-}
-void afisareTelefon(Telefon t) {
-    cout << "diagonala: " << t.diagonala << " inch" << endl;
-    cout << "memorie: " << t.memorieGB << " GB" << endl;
-    cout << "dual SIM: " << t.dualSim << endl;
-    cout << "model: " << t.model << endl;
+int Prajitura::cnt = 100;
+Prajitura:~Prajitura(); {
+delete[] this->denumire;
+delete[] this->ingrediente;
 }
 
-void modificareMemorie(Telefon* t, int memorieNoua) {
-    t->memorieGB = memorieNoua;
+float calculeazaCantitateaTotala(Prajitura* prajituri, int nr_prajituri) {
+    float greutate = 0;
+    for (int p = 0; p < nr_prajituri; p++) {
+        greutate += prajituri[p].getCantitate();
+    }
+    return greutate;
 }
-int calculeazaMemorieTotala(Telefon* telefoane, int nrTelefoane) {
-    int suma = 0;
-    for (int i = 0; i < nrTelefoane; i++) {
-        suma += telefoane[i].memorieGB;
-    }
-    return suma;
-}
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
-int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the <b>lang</b> variable name to see how CLion can help you rename it.
-    int nrTelefoane = 3;
-    Telefon* telefoane = new Telefon[nrTelefoane];
-
-    for (int i = 0; i < nrTelefoane; i++) {
-        telefoane[i] = citireTelefon();
+float calculeazaPretPerIngredient(Prajitura p) {
+    if (p.getnrIngrediente() != 0) {
+        return p.getPret() / p.getnrIngrediente();
     }
-    for (int i = 0; i < nrTelefoane; i++) {
-        afisareTelefon(telefoane[i]);
-    }
-
-    cout << "Memoria totala este: "
-         << calculeazaMemorieTotala(telefoane, nrTelefoane) << " GB" << endl;
-
-    // eliberare memorie
-    for (int i = 0; i < nrTelefoane; i++) {
-        delete[] telefoane[i].model;
-    }
-    delete[] telefoane;
     return 0;
 }
