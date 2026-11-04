@@ -3,6 +3,7 @@ project(Tirteata_Daria_Miruna_ActivitatePOO2026)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(Tirteata_Daria_Miruna_ActivitatePOO2026 Suplimentar1.cpp
-        Seminar4POO.cpp
-        Seminar5POO.cpp)
+add_executable(Tirteata_Daria_Miruna_ActivitatePOO2026
+        Suplimentar5.cpp
+        Suplimentar6.cpp
+        Suplimentar7.cpp)

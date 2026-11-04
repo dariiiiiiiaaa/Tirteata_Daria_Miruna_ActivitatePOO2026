@@ -1,61 +1,58 @@
 #include<iostream>
 using namespace std;
-class Telefon {
+class Carte {
 private:
-    int memorie;
+    int nrPagini;
     float pret;
-    bool areDualSim;
+    bool esteNoua;
 public:
-    ///un constructor implicit
-    Telefon() {
-        this->memorie=64;
-        this->pret=1000;
-        this->areDualSim=false;
+    //Constructor implicit
+    Carte() {
+        this->nrPagini=300;
+        this->pret=50;
+        this->esteNoua=true;
     }
-    ///un constructor cu parametri
-    Telefon(int memorie, float pret, bool areDualSim) {
-        this->memorie=memorie;
+    //Constructor cu parametri
+    Carte(int nrPagini, float pret, bool esteNoua) {
+        this->nrPagini=nrPagini;
         this->pret=pret;
-        this->areDualSim=areDualSim;
+        this->esteNoua=esteNoua;
     }
-    int getMemorie() {
-        return this->memorie;
+    int getNrPagini() {
+        return this->nrPagini;
     }
     float getPret() {
         return this->pret;
     }
-    bool getAreDualSim() {
-        return this->areDualSim;
-    }
-    void setPret(float pret) {
-        if (pret>0) {
-            this->pret=pret;
+    bool getEsteNoua() {
+        return this->esteNoua;
+    }void setPret(float pretNou) {
+        if (pretNou>0) {
+            this->pret=pretNou;
         }
     }
-    float pretPeGB() {
-        if (this->memorie==0) {
+    float pretPePagina() {
+        if (this->nrPagini==0) {
             return 0;
         }
-        return this->pret/this->memorie;
+        return this->pret/this->nrPagini;
     }
-
-void afisare() {
-        cout<<"Memorie= "<<this->memorie<<endl;
+    void afisare() {
+        cout<<"NrPagini "<<this->nrPagini<<endl;
         cout<<"Pret "<<this->pret<<endl;
-        cout << "Dual SIM: " << (this->areDualSim ? "DA" : "NU") << endl;
+        cout<<"EsteNoua "<<(this->esteNoua ? "DA" : "NU")<<endl;
     }
 };
 int main() {
-    Telefon t1;
-    Telefon t2(128,2500,true);
-    cout << "Telefon 1:" << endl;
-    t1.afisare();
-    cout << "Telefon 2:" << endl;
-    t2.afisare();
-    t2.setPret(3000);
-    t2.setPret(-50);
-    cout << "Dupa setPret, t2 are pretul " << t2.getPret() << endl;
-    cout << "Pret pe GB t1: " << t1.pretPeGB() << endl;
-    cout << "Pret pe GB t2: " << t2.pretPeGB() << endl;
+    Carte c1;
+    Carte c2(400, 45, true);
+    cout<<"Carte 1 "<<endl;
+    c1.afisare();
+    c2.setPret(60);    // valid
+    c2.setPret(-5);    // invalid, ramane 60
+    cout << "Pret c2 dupa setPret: " << c2.getPret() << endl;
+
+    cout << "Pret pe pagina c1: " << c1.pretPePagina() << endl;
+    cout << "Pret pe pagina c2: " << c2.pretPePagina() << endl;
     return 0;
 }
